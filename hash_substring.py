@@ -1,32 +1,42 @@
-# python3
-
 def read_input():
-    # this function needs to aquire input both from keyboard and file
-    # as before, use capital i (input from keyboard) and capital f (input from file) to choose which input type will follow
-    
-    
-    # after input type choice
-    # read two lines 
-    # first line is pattern 
-    # second line is text in which to look for pattern 
-    
-    # return both lines in one return
-    
-    # this is the sample return, notice the rstrip function
-    return (input().rstrip(), input().rstrip())
+  # This function should read input from both keyboard and file
+    # Use uppercase i (keyboard input) and uppercase f (file input),
+    # to select the type of input to follow.
+    input_type = input().rstrip()
+    if input_type == 'I':
+        pattern = input().rstrip()
+        text = input().rstrip()
+    elif input_type == 'F':
+        with open('tests/06', 'r') as file:
+            pattern = file.readline().rstrip()
+            text = file.readline().rstrip()
+
+   # Example return value, note the rstrip function
+    return pattern, text
 
 def print_occurrences(output):
-    # this function should control output, it doesn't need any return
+    # This function should control the output, no return value is required
     print(' '.join(map(str, output)))
 
 def get_occurrences(pattern, text):
-    # this function should find the occurances using Rabin Karp alghoritm 
+  # This function should find occurrences using the Rabin-Karp algorithm
+    pattern_length = len(pattern)
+    text_length = len(text)
+    pattern_hash = hash(pattern)
+    text_hash = hash(text[:pattern_length])
+    occurrences = []
 
-    # and return an iterable variable
-    return [0]
+    for i in range(text_length - pattern_length + 1):
+        if pattern_hash == text_hash and pattern == text[i:i+pattern_length]:
+            occurrences.append(i)
+
+        if i < text_length - pattern_length:
+            text_hash = hash(text[i+1:i+pattern_length+1])
+
+  # And return the variable to be enumerated
+    return occurrences
 
 
-# this part launches the functions
+# This part starts the functions
 if __name__ == '__main__':
     print_occurrences(get_occurrences(*read_input()))
-
